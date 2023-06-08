@@ -1,38 +1,64 @@
-# create-svelte
+# Make Stops API
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+Create a palette of colors based on a single "base" color.
+## API
+  ``` jsonc
+  {
+    "base": "#00ffb7",    // base color - required
+    "count": 10,          // stop count
+    "l": {                // luminosity options
+      "max": 75,          // max lum
+      "min": 25           // min lum
+    },
+    "s": {                // saturation options
+      "add": 0,           // sat to add
+      "sub": 0            // sat to subtract
+    },
+    "h": {                // hue options
+      "add": 0,           // hue to add
+      "sub": 0            // hue to subtract
+    }
+  }
 ```
 
-## Developing
+<details>
+  <summary>Details</summary>
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+  ### `base: string` *(required)*
+  Base color for the theme as a hexadecimal color code.
 
-```bash
-npm run dev
+  ### `count: number`
+  The number of luminosity stops in the returned palette.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+  *Default is `10`*
 
-## Building
+  ### `l.max: number`
+  **Absolute:** The maximum (lightest) luminosity for the returned color palette.
 
-To create a production version of your app:
+  *Default is `75`*
 
-```bash
-npm run build
-```
+  ### `l.min: number`
+  **Absolute:** The minimum (darkest) luminosity for the returned color palette.
 
-You can preview the production build with `npm run preview`.
+  *Default is `25`*
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+  ### `s.add: number`
+  **Relative:** The amount of saturation to add/remove at the lightest returned color (applied linearly from the base color).
+
+  *Default is `0`*
+
+  ### `s.sub: number`
+  **Relative:** The amount of saturation to add/remove at the darkest returned color (applied linearly from the base color).
+
+  *Default is `0`*
+
+  ### `h.add: number`
+  **Relative:** Count of hue degrees to add/remove at the lightest returned color (applied linearly from the base color).
+
+  *Default is `0`*
+
+  ### `h.sub: number`
+  **Relative:** Count of hue degrees to add/remove at the darkest returned color (applied linearly from the base color).
+
+  *Default is `0`*
+</details>
