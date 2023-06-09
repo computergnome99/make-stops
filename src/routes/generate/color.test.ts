@@ -101,3 +101,129 @@ test('rgb.parse()', () => {
 		blue: 255
 	});
 });
+
+test('rgb.toString()', () => {
+	expect(color.rgb.toString({ red: 255, green: 255, blue: 255 })).toBe('rgb(255,255,255)');
+	expect(color.rgb.toString({ red: 0, green: 0, blue: 0 })).toBe('rgb(0,0,0)');
+	expect(color.rgb.toString({ red: 0, green: 251, blue: 255 })).toBe('rgb(0,251,255)');
+});
+
+test('rgb.toHex()', () => {
+	expect(color.rgb.toHex({ red: 255, green: 255, blue: 255 })).toBe('#ffffff');
+	expect(color.rgb.toHex({ red: 0, green: 0, blue: 0 })).toBe('#000000');
+	expect(color.rgb.toHex({ red: 0, green: 251, blue: 255 })).toBe('#00fbff');
+});
+
+test('rgb.toHsl()', () => {
+	expect(color.rgb.toHsl({ red: 255, green: 255, blue: 255 })).toStrictEqual<HSL>({
+		hue: 0,
+		saturation: 0,
+		luminosity: 100
+	});
+	expect(color.rgb.toHsl({ red: 0, green: 0, blue: 0 })).toStrictEqual<HSL>({
+		hue: 0,
+		saturation: 0,
+		luminosity: 0
+	});
+	expect(color.rgb.toHsl({ red: 0, green: 251, blue: 255 })).toStrictEqual<HSL>({
+		hue: 181,
+		saturation: 100,
+		luminosity: 50
+	});
+});
+
+// hsl
+test('hsl.validate()', () => {
+	expect(color.hsl.validate('hsl(0,0%,100%)')).toBe(true);
+	expect(color.hsl.validate('hsl(0,0%,0%)')).toBe(true);
+	expect(color.hsl.validate('hsl(181,100%,50%)')).toBe(true);
+	expect(color.hsl.validate('hsl(0,100,0)')).toBe(false);
+	expect(color.hsl.validate('hsl(0,100,0)')).toBe(false);
+	expect(color.hsl.validate('rgb(255,255,255)')).toBe(false);
+	expect(color.hsl.validate('')).toBe(false);
+});
+
+test('hsl.parse()', () => {
+	expect(color.hsl.parse('hsl(0,0%,100%)')).toStrictEqual<HSL>({
+		hue: 0,
+		saturation: 0,
+		luminosity: 100
+	});
+	expect(color.hsl.parse('hsl(0,0%,0%)')).toStrictEqual<HSL>({
+		hue: 0,
+		saturation: 0,
+		luminosity: 0
+	});
+	expect(color.hsl.parse('hsl(181,100%,50%)')).toStrictEqual<HSL>({
+		hue: 181,
+		saturation: 100,
+		luminosity: 50
+	});
+});
+
+test('hsl.toHex()', () => {
+	expect(
+		color.hsl.toHex({
+			hue: 0,
+			saturation: 0,
+			luminosity: 100
+		})
+	).toBe('#ffffff');
+	expect(
+		color.hsl.toHex({
+			hue: 0,
+			saturation: 0,
+			luminosity: 0
+		})
+	).toBe('#000000');
+	expect(
+		color.hsl.toHex({
+			hue: 181,
+			saturation: 100,
+			luminosity: 50
+		})
+	).toBe('#00fbff');
+});
+
+test('hsl.toRgb()', () => {
+	expect(
+		color.hsl.toRgb({
+			hue: 0,
+			saturation: 0,
+			luminosity: 100
+		})
+	).toStrictEqual<RGB>({
+		red: 255,
+		green: 255,
+		blue: 255
+	});
+	expect(
+		color.hsl.toRgb({
+			hue: 0,
+			saturation: 0,
+			luminosity: 0
+		})
+	).toStrictEqual<RGB>({
+		red: 0,
+		green: 0,
+		blue: 0
+	});
+	expect(
+		color.hsl.toRgb({
+			hue: 181,
+			saturation: 100,
+			luminosity: 50
+		})
+	).toStrictEqual<RGB>({
+		red: 0,
+		green: 251,
+		blue: 255
+	});
+});
+
+// theme
+test('theme.createSteps()', () => {
+	expect(color.theme.createSteps()).toStrictEqual([10, 20, 30, 40, 50, 60, 70, 80, 90, 100]);
+	expect(color.theme.createSteps(20, 100, 5)).toStrictEqual([20, 40, 60, 80, 100]);
+	expect(color.theme.createSteps(16, 96, 6)).toStrictEqual([16, 32, 48, 64, 80, 96]);
+});

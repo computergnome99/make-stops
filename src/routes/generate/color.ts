@@ -38,13 +38,11 @@ class Validator {
 
 class Parser {
 	private splitStr(value: string): number[] {
-		const colorStrings = value
-				.split('(')[1]
-				.substring(0, value.length - 5)
-				.split(','),
+		const colorStrings = value.split('(')[1].split(')')[0].split(','),
 			colors: number[] = [];
 
-		for (const string of colorStrings) {
+		for (let string of colorStrings) {
+			if (string.charAt(string.length - 1) == '%') string = string.substring(0, string.length - 1);
 			colors.push(Number(string));
 		}
 
@@ -304,13 +302,13 @@ type HueOptions = {
 };
 
 class Theme {
-	public createSteps(min: number, max: number, count: number): number[] {
+	public createSteps(min = 10, max = 100, count = 10): number[] {
 		const distance = max - min,
 			size = Math.round(distance / (count - 1)),
 			output: number[] = [];
 
-		for (let i = 0; i <= count; i++) {
-			if (i == count) {
+		for (let i = 0; i < count; i++) {
+			if (i == count - 1) {
 				output.push(max);
 				break;
 			}
